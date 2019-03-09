@@ -32,7 +32,7 @@ def hex_to_64(hexstr):
             # and save the last two of h's bits.
             bits = (bits << 2) | (hbits >> 2)
             output += B64CHARS[bits]
-            bits = hbits & 0x3
+            bits = hbits & 3
             bits_left = 4
 
     # After reading hexstr, we may need some zeroes for padding.
