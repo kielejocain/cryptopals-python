@@ -1,5 +1,9 @@
 def hex_to_64(hexstr):
-    """Take in a hex string, convert to base64 string"""
+    """Convert a hex string to a base64 string.
+    
+    Keyword arguments:
+    hexstr -- the hex string we wish to convert.
+    """
     B64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
     ## internals
@@ -42,3 +46,4 @@ def hex_to_64(hexstr):
         output += '=' * (bits_left // 2)
 
     return output
+
