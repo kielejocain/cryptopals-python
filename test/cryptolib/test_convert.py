@@ -12,3 +12,7 @@ def test_hex_to_64():
     assert convert.hex_to_64('49276d') == 'SSdt'
     assert_raises(ValueError, convert.hex_to_64, 'best')
 
+def test_hex_to_ascii():
+    assert convert.hex_to_ascii('') == ''
+    assert convert.hex_to_ascii('49') == 'I'
+    assert convert.hex_to_ascii('49276d') == 'I\'m'

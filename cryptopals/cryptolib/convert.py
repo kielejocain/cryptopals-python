@@ -47,3 +47,17 @@ def hex_to_64(hexstr):
 
     return output
 
+def hex_to_ascii(hexstr):
+    """Convert a hex string to ASCII.
+
+    Keyword arguments:
+    hexstr -- the hex string to convert
+    """
+    if len(hexstr) == 0:
+        return ''
+    elif len(hexstr) == 1:
+        print ("Warning: odd number of characters.  Dropped extra nibble")
+        return ''
+    else:
+        return chr((int(hexstr[0], 16) << 4) | int(hexstr[1], 16)) + \
+                hex_to_ascii(hexstr[2:])

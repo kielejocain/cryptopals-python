@@ -1,5 +1,8 @@
+import itertools
+
 import cryptolib.convert as convert
-import cryptolib.combine as combine
+import cryptolib.encrypt as encrypt
+import cryptolib.measure as measure
 
 def exercise_1():
     INPUT = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
@@ -49,7 +52,7 @@ def exercise_2():
 
     # run the exercise and allow the user to visually inspect
     print("Here is the output, written above the desired output.")
-    output = combine.hex_xor(INPUT1, INPUT2)
+    output = encrypt.hex_key_xor(INPUT1, INPUT2)
     print(output)
     print(CHECK)
 
@@ -57,8 +60,38 @@ def exercise_2():
     assert output == CHECK
     print("SUCCESS!\n\n")
 
+def exercise_3():
+    INPUT = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+    CHECK = "Cooking MC's like a pound of bacon"
+
+    prob_statement = """~~~SET 1 EXERCISE 3: Single-byte XOR cipher~~~
+
+    The hex encoded string:
+    {input}
+
+    ... has been XOR'd against a single character.  Find the key, decrypt the message.
+    """.format(input=INPUT)
+
+    print(prob_statement)
+
+    possibles = []
+    for c1, c2 in itertools.product('0123456789abcdef', repeat = 2):
+        key = chr((int(c1, 16) << 4) | int(c2, 16))
+        out = convert.hex_to_ascii(encrypt.hex_key_xor(INPUT, c1+c2))
+        score = measure.english_frequency_score(out)
+        possibles.append((key, score, out))
+
+    possibles.sort(key=lambda x: x[1], reverse = True)
+
+    print("key: {}".format(possibles[0][0]))
+    print("msg: {}".format(possibles[0][2]))
+
+    assert possibles[0][2] == CHECK
+    print("SUCCESS!\n\n")
+
 
 
 if __name__ == "__main__":
     exercise_1()
     exercise_2()
+    exercise_3()
