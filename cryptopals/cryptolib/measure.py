@@ -1,9 +1,10 @@
 def english_frequency_score(text):
-    """Scores a text on how likely it is to be in English.
+    """Scores a byte string on how likely it is to be in English.
 
     Keyword arguments:
-    text -- the text to be scored
+    text -- the byte string to be scored
     """
+    # source: http://www.macfreek.nl/memory/Letter_Distribution
     FREQUENCY = {' ': 18.288, 'e': 10.267, 't': 7.517, 'a': 6.532, 'o': 6.160,
                 'n': 5.712, 'i': 5.668, 's': 5.317, 'r': 4.988, 'h': 4.979,
                 'l': 3.318, 'd': 3.283, 'u': 2.276, 'c': 2.234, 'm': 2.027,
