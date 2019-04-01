@@ -1,4 +1,3 @@
-from . import convert
 from . import encrypt
 from . import measure
 
