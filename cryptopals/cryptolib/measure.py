@@ -13,7 +13,7 @@ def english_frequency_score(text):
                 }
 
     score = 0
-    for c in text.lower():
-        score += FREQUENCY.get(c, 0)
+    for c in text:
+        score += FREQUENCY.get(chr(c).lower(), 0)
 
     return score

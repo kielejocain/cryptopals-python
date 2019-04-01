@@ -26,3 +26,9 @@ def test_hex_key_xor():
     assert encrypt.hex_key_xor('1c0', '686') == '746'
     assert encrypt.hex_key_xor('111111', '2') == '333333'
     assert encrypt.hex_key_xor('5a2', 'f1') == 'abd'
+
+def test_byte_key_xor():
+    assert encrypt.byte_key_xor(b"0", b"0") == b"\x00"
+    assert encrypt.byte_key_xor(b"z", b"z") == b"\x00"
+    assert encrypt.byte_key_xor(b"B", b"I") == b"\x0b"
+    assert encrypt.byte_key_xor(b"Burning", b"ICE") == b"\x0b67'*+."
