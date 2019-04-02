@@ -15,7 +15,15 @@ def english_frequency_score(text):
 
     score = 0
     for c in text:
-        score += FREQUENCY.get(chr(c).lower(), 0)
+        # tabs and linefeeds/carriage returns
+        if c in [9, 10, 13]:
+            continue
+        # if c isn't an English character or punctuation,
+        # the string isn't English.
+        elif c < 32 or c > 126:
+            return -1
+        else:
+            score += FREQUENCY.get(chr(c).lower(), 0)
 
     return score
 
