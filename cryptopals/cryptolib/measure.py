@@ -18,3 +18,23 @@ def english_frequency_score(text):
         score += FREQUENCY.get(chr(c).lower(), 0)
 
     return score
+
+def hamming_distance(str1, str2):
+    """Computes the hamming distance (i.e. the number of
+    differing bits) between two byte strings.
+
+    Keyword arguments:
+    str1 -- the first byte string
+    str2 -- the second byte string
+    """
+    distance = 0
+    for b1, b2 in zip(str1, str2):
+        # xor in each place is 1 if the bits differ, 0 otherwise
+        bdiff = b1 ^ b2
+        while bdiff > 0:
+            # if the last bit is 1, count it
+            if bdiff % 2 == 1:
+                distance += 1
+            # drop the last bit
+            bdiff = bdiff >> 1
+    return distance

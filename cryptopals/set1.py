@@ -2,7 +2,7 @@ import itertools
 import os
 
 import cryptolib.convert as convert
-import cryptolib.decrypt as decrypt
+import cryptolib.crack   as crack
 import cryptolib.encrypt as encrypt
 import cryptolib.measure as measure
 
@@ -75,7 +75,7 @@ def exercise_3():
     print(prob_statement)
 
     bytestr = bytes.fromhex(INPUT)
-    plaintext = decrypt.single_byte_xor(bytestr).decode('utf-8')
+    plaintext = crack.single_byte_xor(bytestr).decode('utf-8')
 
     print("OUTPUT: {}".format(plaintext))
     assert plaintext == CHECK
@@ -106,7 +106,7 @@ def exercise_4():
     possibles = []
     for line in data:
         bytestr = bytes.fromhex(line)
-        possibles.append(decrypt.single_byte_xor(bytestr))
+        possibles.append(crack.single_byte_xor(bytestr))
 
     print("Picking a winner from the winners of each line")
     possibles = [(p, measure.english_frequency_score(p)) for p in possibles]
