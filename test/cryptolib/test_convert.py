@@ -12,7 +12,15 @@ def test_hex_to_64():
     assert convert.hex_to_64('49276d') == 'SSdt'
     assert_raises(ValueError, convert.hex_to_64, 'best')
 
-def test_hex_to_ascii():
-    assert convert.hex_to_ascii('') == ''
-    assert convert.hex_to_ascii('49') == 'I'
-    assert convert.hex_to_ascii('49276d') == 'I\'m'
+def tex_hex_from_64():
+    assert convert.hex_from_64('') == ''
+    assert convert.hex_from_64('Q=') == '4'
+    assert convert.hex_from_64('SQ==') == '49'
+    assert convert.hex_from_64('SS') == '492'
+    assert convert.hex_from_64('SSc=') == '4927'
+    assert convert.hex_from_64('SSdg==') == '49276'
+    assert convert.hex_from_64('SSdt') == '49276d'
+    assert_raises(ValueError, convert.hex_from_64, 'Hello, world!')
+    assert_raises(ValueError, convert.hex_from_64, 'Q')
+    assert_raises(ValueError, convert.hex_from_64, 'SS=')
+    assert_raises(ValueError, convert.hex_from_64, 'Q==')

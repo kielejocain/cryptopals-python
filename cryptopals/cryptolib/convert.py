@@ -2,7 +2,7 @@ def hex_to_64(hexstr):
     """Convert a hex string to a base64 string.
     
     Keyword arguments:
-    hexstr -- the hex string we wish to convert.
+    hexstr -- the hex string we wish to convert
     """
     B64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
@@ -47,17 +47,68 @@ def hex_to_64(hexstr):
 
     return output
 
-def hex_to_ascii(hexstr):
-    """Convert a hex string to ASCII.
+def hex_from_64(b64str):
+    """Convert a base64 string to a hex string.
 
     Keyword arguments:
-    hexstr -- the hex string to convert
+    b64str -- the base64 string we wish to convert
     """
-    if len(hexstr) == 0:
-        return ''
-    elif len(hexstr) == 1:
-        print ("Warning: odd number of characters.  Dropped extra nibble")
-        return ''
+    B64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    HEXCHARS = '0123456789abcdef'
+
+    ## internals
+    # bits contains the bits read off so far that don't make enough for a char
+    bits = 0
+    # bits_left tracks how many bits are left until a char is ready to convert
+    bits_left = 4
+    # output hods the accrued hex string thus far
+    output = ''
+
+    # compute expected padding to validate at the end
+    padding = 0
+    unpadded_str = b64str
+    while unpadded_str[-1] == '=':
+        padding += 2
+        unpadded_str = unpadded_str[:-1]
+
+    for b in unpadded_str:
+        charbits = B64CHARS.find(b)
+        if charbits == -1:
+            err_msg = 'The given string was not base64-encoded: {}\nDue to char: {}'
+            raise ValueError(err_msg.format(b64str, b))
+        # if no bits carried over
+        if bits_left == 4:
+            # append the first four bits as a hex char
+            output += HEXCHARS[charbits >> 2]
+            # save the last two bits
+            bits = charbits & 3
+            bits_left = 2
+        else:
+            # two bits are carried over; prepend them
+            charbits = (bits << 6) | charbits
+            output += HEXCHARS[charbits >> 4] + HEXCHARS[charbits & 15]
+            # clear the bit carring mechanism
+            bits = 0
+            bits_left = 4
+
+    # validate and trim if necessary
+    if padding == 4:
+        # there should be no bits carried,
+        # and the last char should be an unnecessary '0' from padding
+        if (bits_left == 2) or (output[-1] != '0'):
+            err_msg = 'The given string was not base64-encoded: {}\nPadding error'
+            raise ValueError(err_msg.format(b64str))
+        else:
+            output = output[:-1]
+    elif padding == 2:
+        # there should be two padding bits carried that are zeroes
+        if (bits_left == 4) or (bits > 0):
+            err_msg = 'The given string was not base64-encoded: {}\nPadding error'
+            raise ValueError(err_msg.format(b64str))
     else:
-        return chr((int(hexstr[0], 16) << 4) | int(hexstr[1], 16)) + \
-                hex_to_ascii(hexstr[2:])
+        # there should be no carried bits
+        if bits_left == 2:
+            err_msg = 'The given string was not base64-encoded: {}\nPadding error'
+            raise ValueError(err_msg.format(b64str))
+    
+    return output
