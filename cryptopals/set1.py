@@ -75,8 +75,11 @@ def exercise_3():
     print(prob_statement)
 
     bytestr = bytes.fromhex(INPUT)
-    plaintext = crack.single_byte_xor(bytestr).decode('utf-8')
+    key, plainbytes = crack.single_byte_xor(bytestr)
+    key = key.decode('utf-8')
+    plaintext = plainbytes.decode('utf-8')
 
+    print("KEY:    {}".format(key))
     print("OUTPUT: {}".format(plaintext))
     assert plaintext == CHECK
     print("SUCCESS!\n\n")
@@ -106,7 +109,7 @@ def exercise_4():
     possibles = []
     for line in data:
         bytestr = bytes.fromhex(line)
-        possibles.append(crack.single_byte_xor(bytestr))
+        possibles.append(crack.single_byte_xor(bytestr)[1])
 
     print("Picking a winner from the winners of each line")
     possibles = [(p, measure.english_frequency_score(p)) for p in possibles]
@@ -122,7 +125,7 @@ def exercise_5():
     CHECK = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272" + \
             "a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
 
-    prob_statement = """~~~SET 1 EXERCISE 5: Implement repeating-key XOR
+    prob_statement = """~~~SET 1 EXERCISE 5: Implement repeating-key XOR~~~
 
     Here is the opening stanza of an important work of the English language:
 
@@ -157,6 +160,33 @@ def exercise_5():
     assert ciphertext == CHECK
     print("SUCCESS!\n\n")
 
+def exercise_6():
+    file_dir = os.path.dirname(os.path.realpath(__file__))
+    input_file = file_dir + "/data/1.6.txt"
+
+    prob_statement = """~~~SET 1 EXERCISE 6: Break repeating-key XOR~~~
+    There is a file at ./data/1.6.txt.  It's been base64'd after being encrypted
+    with repeating-key XOR.
+
+    Decrypt it.
+    """
+
+    print(prob_statement)
+
+    print("Reading data file")
+
+    with open(input_file, 'r') as f:
+        data = ''.join([l.strip() for l in f.readlines()])
+    data = bytes.fromhex(convert.hex_from_64(data))
+    key, plaintext = crack.repeating_key_xor(data)
+    key = key.decode('utf-8')
+    plaintext = plaintext.decode('utf-8')
+
+    print("KEY: {}".format(key))
+    print("PLAINTEXT:\n{}".format(plaintext))
+    assert key == "Terminator X: Bring the noise"
+    print("SUCCESS!\n\n")
+
 
 if __name__ == "__main__":
     exercise_1()
@@ -164,3 +194,4 @@ if __name__ == "__main__":
     exercise_3()
     exercise_4()
     exercise_5()
+    exercise_6()

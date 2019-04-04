@@ -53,6 +53,9 @@ def hex_from_64(b64str):
     Keyword arguments:
     b64str -- the base64 string we wish to convert
     """
+    if b64str == '':
+        return ''
+
     B64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
     HEXCHARS = '0123456789abcdef'
 
