@@ -1,18 +1,18 @@
-from . import encrypt
+from . import decrypt
 from . import measure
 from . import utils
 
 def single_byte_xor(ciphertext):
-    """Decrypt a byte string XOR encrypted with a single byte key.
+    """Crack a byte string XOR encrypted with a single byte key.
 
     Keyword arguments:
-    plaintext -- the byte string to be decrypted
+    plaintext -- the byte string to be cracked
     """
 
     possibles = []
     for b in range(256):
         key = bytes([b])
-        out = encrypt.byte_key_xor(ciphertext, key)
+        out = decrypt.byte_key_xor(ciphertext, key)
         score = measure.english_frequency_score(out)
         possibles.append((key, out, score))
 
@@ -21,10 +21,10 @@ def single_byte_xor(ciphertext):
     return (possibles[0][0], possibles[0][1])
 
 def repeating_key_xor(ciphertext):
-    """Decrypt a byte string XOR encrypted with a byte string key.
+    """Crack a byte string XOR encrypted with a byte string key.
 
     Keyword arguments:
-    plaintext -- the byte string to be decrypted
+    plaintext -- the byte string to be cracked
     """
 
     def transpose(byte_list):
