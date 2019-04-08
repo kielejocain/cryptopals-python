@@ -7,3 +7,5 @@ if __name__ == "__main__":
     set1.exercise_4()
     set1.exercise_5()
     set1.exercise_6()
+    set1.exercise_7()
+    set1.exercise_8()

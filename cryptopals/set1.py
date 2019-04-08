@@ -3,8 +3,10 @@ import os
 
 import cryptolib.convert as convert
 import cryptolib.crack   as crack
+import cryptolib.decrypt as decrypt
 import cryptolib.encrypt as encrypt
 import cryptolib.measure as measure
+import cryptolib.utils   as utils
 
 def exercise_1():
     INPUT = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
@@ -187,6 +189,68 @@ def exercise_6():
     assert key == "Terminator X: Bring the noise"
     print("SUCCESS!\n\n")
 
+def exercise_7():
+    file_dir = os.path.dirname(os.path.realpath(__file__))
+    input_file = file_dir + "/data/1.7.txt"
+
+    prob_statement = """~~~SET 1 EXERCISE 7: AES in ECB mode~~~
+    The base64-encoded content in ./data/1.7.txt has been encrypted via
+    AES-128 in ECB mode under the key
+
+    "YELLOW SUBMARINE".
+
+    Decrypt it.  You know the  key, after all.
+    """
+
+    print(prob_statement)
+
+    print("Reading data file")
+
+    with open(input_file, 'r') as f:
+        data = ''.join([l.strip() for l in f.readlines()])
+    data = bytes.fromhex(convert.hex_from_64(data))
+    key = b'YELLOW SUBMARINE'
+    plaintext = decrypt.aes_ecb(data, key).decode('utf-8')
+
+    print("PLAINTEXT:\n{}".format(plaintext))
+    assert plaintext.split('\n')[0] == "I'm back and I'm ringin' the bell "
+    print("SUCCESS!\n\n")
+
+def exercise_8():
+    file_dir = os.path.dirname(os.path.realpath(__file__))
+    input_file = file_dir + "/data/1.8.txt"
+
+    prob_statement = """~~~SET 1 EXERCISE 8: Detect AES in ECB mode~~~
+    In ./data/1.8.txt are a bunch of hex-encoded ciphertexts.
+
+    One of them has been encrypted with ECB.
+
+    Detect it.
+
+    Remember that the problem with ECB is that it is stateless and deterministic;
+    the same 16 byte plaintext block will always produce the same 16 byte
+    ciphertext.
+    """
+
+    print(prob_statement)
+
+    print("Reading data file")
+
+    with open(input_file, 'r') as f:
+        inputs = [l.strip() for l in f.readlines()]
+    repeats = []
+    for i, data in enumerate(inputs):
+        ct = bytes.fromhex(data)
+        cb = list(utils.list_blocks(ct, 16))
+        cs = set(cb)
+        repeats.append((i, cb, len(cb) - len(cs)))
+    repeats.sort(key=lambda x: x[2], reverse=True)
+    print("MOST REPETITIVE LINE:\n{}".format(
+        '\n'.join([bytes.hex(b) for b in repeats[0][1]])
+        ))
+    assert repeats[0][0] == 132
+    print("SUCCESS!\n\n")
+
 
 if __name__ == "__main__":
     exercise_1()
@@ -195,3 +259,5 @@ if __name__ == "__main__":
     exercise_4()
     exercise_5()
     exercise_6()
+    exercise_7()
+    exercise_8()

@@ -1,5 +1,21 @@
 import itertools
 
+def byte_key_xor(plaintext, key):
+    """Encrypt an byte string with a byte string key.
+
+    Keywork arguments:
+    plaintext -- the byte string to be encrypted
+    key       -- the encryption key
+    """
+
+    output = b''
+
+    #convert chars to binary, XOR (^), and append to output
+    for pc, kc in zip(plaintext, itertools.cycle(key)):
+        output += bytes([pc ^ kc])
+
+    return output
+
 def hex_key_xor(plaintext, key):
     """Encrypt a hex string with a hex key.
 
@@ -14,21 +30,5 @@ def hex_key_xor(plaintext, key):
     # convert chars to binary, XOR (^), and append to output
     for pc, kc in zip(plaintext, itertools.cycle(key)):
         output += HEXCHARS[int(pc, 16) ^ int(kc, 16)]
-
-    return output
-
-def byte_key_xor(plaintext, key):
-    """Encrypt an byte string with a byte string key.
-
-    Keywork arguments:
-    plaintext -- the byte string to be encrypted
-    key       -- the encryption key
-    """
-
-    output = b''
-
-    #convert chars to binary, XOR (^), and append to output
-    for pc, kc in zip(plaintext, itertools.cycle(key)):
-        output += bytes([pc ^ kc])
 
     return output

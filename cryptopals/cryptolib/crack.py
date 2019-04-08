@@ -1,5 +1,6 @@
 from . import encrypt
 from . import measure
+from . import utils
 
 def single_byte_xor(ciphertext):
     """Decrypt a byte string XOR encrypted with a single byte key.
@@ -26,13 +27,6 @@ def repeating_key_xor(ciphertext):
     plaintext -- the byte string to be decrypted
     """
 
-    def blocks(n):
-        """A generator of cipher blocks"""
-        def nblocks():
-            for i in range(0, len(ciphertext), n):
-                yield ciphertext[i:i+n]
-        return list(nblocks())
-
     def transpose(byte_list):
         """Transposes a list of byte strings so that the first list
         of the output contains all the first elements of the input
@@ -48,7 +42,7 @@ def repeating_key_xor(ciphertext):
     # Attempt to deduce the key length
     length_scores = []
     for l in range(2, 41):
-        cipher_blocks = blocks(l)
+        cipher_blocks = list(utils.list_blocks(ciphertext, l))
         score = 0
         for s1, s2 in zip(cipher_blocks, cipher_blocks[1:]):
             score += measure.hamming_distance(s1, s2)
