@@ -12,21 +12,21 @@ def exercise_1():
     INPUT = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
     CHECK = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
 
-    prob_statement = """~~~SET 1 EXERCISE 1: Convert hex to base64~~~
+    prob_statement = f"""~~~SET 1 EXERCISE 1: Convert hex to base64~~~
 
     The string
-    {input}
+    {INPUT}
 
     should produce
-    {output}
-    """.format(input=INPUT, output=CHECK)
+    {CHECK}
+    """
 
     print(prob_statement)
 
     # run the exercise and allow the user to visually inspect
     output = convert.hex_to_64(INPUT)
-    print("OUTPUT: {}".format(output))
-    print("ANSWER: {}".format(CHECK))
+    print(f"OUTPUT: {output}")
+    print(f"ANSWER: {CHECK}")
 
     # confirm the assertion
     assert output == CHECK
@@ -37,26 +37,26 @@ def exercise_2():
     INPUT2 = "686974207468652062756c6c277320657965"
     CHECK  = "746865206b696420646f6e277420706c6179"
 
-    prob_statement = """~~~SET 1 EXERCISE 2: Fixed XOR~~~
+    prob_statement = f"""~~~SET 1 EXERCISE 2: Fixed XOR~~~
 
     Write a function that takes two equal-length buffers and produces their XOR combination.
 
     If your function works properly, then when you feed it the string:
-    {input1}
+    {INPUT1}
 
     ... after hex decoding, and when XOR'd against:
-    {input2}
+    {INPUT2}
 
     ... should produce:
-    {check}
-    """.format(input1=INPUT1, input2=INPUT2, check=CHECK)
+    {CHECK}
+    """
 
     print(prob_statement)
 
     # run the exercise and allow the user to visually inspect
     output = encrypt.hex_key_xor(INPUT1, INPUT2)
-    print("OUTPUT: {}".format(output))
-    print("ANSWER: {}".format(CHECK))
+    print(f"OUTPUT: {output}")
+    print(f"ANSWER: {CHECK}")
 
     # confirm the assertion
     assert output == CHECK
@@ -66,13 +66,13 @@ def exercise_3():
     INPUT = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
     CHECK = "Cooking MC's like a pound of bacon"
 
-    prob_statement = """~~~SET 1 EXERCISE 3: Single-byte XOR cipher~~~
+    prob_statement = f"""~~~SET 1 EXERCISE 3: Single-byte XOR cipher~~~
 
     The hex encoded string:
-    {input}
+    {INPUT}
 
     ... has been XOR'd against a single character.  Find the key, decrypt the message.
-    """.format(input=INPUT)
+    """
 
     print(prob_statement)
 
@@ -81,8 +81,8 @@ def exercise_3():
     key = key.decode('utf-8')
     plaintext = plainbytes.decode('utf-8')
 
-    print("KEY:    {}".format(key))
-    print("OUTPUT: {}".format(plaintext))
+    print(f"KEY:    {key}")
+    print(f"OUTPUT: {plaintext}")
     assert plaintext == CHECK
     print("SUCCESS!\n\n")
 
@@ -118,7 +118,7 @@ def exercise_4():
     possibles.sort(key=lambda x: x[1], reverse = True)
 
     winner = possibles[0][0].decode('utf-8')
-    print("OUTPUT: {}".format(winner))
+    print(f"OUTPUT: {winner}")
     assert winner == CHECK
     print("SUCCESS!\n\n")
 
@@ -155,10 +155,10 @@ def exercise_5():
     bytestr = bytes([ord(c) for c in INPUT])
     ciphertext = encrypt.byte_key_xor(bytestr, b'ICE').hex()
 
-    print("OUTPUT: {}".format(ciphertext[:75]))
-    print("        {}".format(ciphertext[75:]))
-    print("ANSWER: {}".format(CHECK[:75]))
-    print("        {}".format(CHECK[75:]))
+    print(f"OUTPUT: {ciphertext[:75]}")
+    print(f"        {ciphertext[75:]}")
+    print(f"ANSWER: {CHECK[:75]}")
+    print(f"        {CHECK[75:]}")
     assert ciphertext == CHECK
     print("SUCCESS!\n\n")
 
@@ -184,8 +184,8 @@ def exercise_6():
     key = key.decode('utf-8')
     plaintext = plaintext.decode('utf-8')
 
-    print("KEY: {}".format(key))
-    print("PLAINTEXT:\n{}".format(plaintext))
+    print(f"KEY: {key}")
+    print(f"PLAINTEXT:\n{plaintext}")
     assert key == "Terminator X: Bring the noise"
     print("SUCCESS!\n\n")
 
@@ -212,7 +212,7 @@ def exercise_7():
     key = b'YELLOW SUBMARINE'
     plaintext = decrypt.aes_ecb(data, key).decode('utf-8')
 
-    print("PLAINTEXT:\n{}".format(plaintext))
+    print(f"PLAINTEXT:\n{plaintext}")
     assert plaintext.split('\n')[0] == "I'm back and I'm ringin' the bell "
     print("SUCCESS!\n\n")
 
