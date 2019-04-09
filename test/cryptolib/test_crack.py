@@ -13,7 +13,7 @@ def test_single_byte_xor():
 
 def test_repeating_key_xor():
     file_dir = os.path.dirname(os.path.realpath(__file__))
-    input_file = file_dir + "/../../cryptopals/data/1.6.txt"
+    input_file = file_dir + "/../../cryptopals/data/6.txt"
     with open(input_file, 'r') as f:
         data = ''.join([l.strip() for l in f.readlines()])
     data = bytes.fromhex(convert.hex_from_64(data))

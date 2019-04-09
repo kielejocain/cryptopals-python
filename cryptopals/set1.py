@@ -90,12 +90,12 @@ def exercise_4():
     # get the directory of the current file to compute
     # the path to the data file
     file_dir = os.path.dirname(os.path.realpath(__file__))
-    input_file = file_dir + "/data/1.4.txt"
+    input_file = file_dir + "/data/4.txt"
     CHECK = "Now that the party is jumping\n"
 
     prob_statement = """~~~SET 1 EXERCISE 4: Detect single-character XOR~~~
 
-    One of the 60-character strings in ./data/1.4.txt has been encrypted by
+    One of the 60-character strings in ./data/4.txt has been encrypted by
     single-character XOR.
 
     Find it.
@@ -164,10 +164,10 @@ def exercise_5():
 
 def exercise_6():
     file_dir = os.path.dirname(os.path.realpath(__file__))
-    input_file = file_dir + "/data/1.6.txt"
+    input_file = file_dir + "/data/6.txt"
 
     prob_statement = """~~~SET 1 EXERCISE 6: Break repeating-key XOR~~~
-    There is a file at ./data/1.6.txt.  It's been base64'd after being encrypted
+    There is a file at ./data/6.txt.  It's been base64'd after being encrypted
     with repeating-key XOR.
 
     Decrypt it.
@@ -191,10 +191,10 @@ def exercise_6():
 
 def exercise_7():
     file_dir = os.path.dirname(os.path.realpath(__file__))
-    input_file = file_dir + "/data/1.7.txt"
+    input_file = file_dir + "/data/7.txt"
 
     prob_statement = """~~~SET 1 EXERCISE 7: AES in ECB mode~~~
-    The base64-encoded content in ./data/1.7.txt has been encrypted via
+    The base64-encoded content in ./data/7.txt has been encrypted via
     AES-128 in ECB mode under the key
 
     "YELLOW SUBMARINE".
@@ -218,10 +218,10 @@ def exercise_7():
 
 def exercise_8():
     file_dir = os.path.dirname(os.path.realpath(__file__))
-    input_file = file_dir + "/data/1.8.txt"
+    input_file = file_dir + "/data/8.txt"
 
     prob_statement = """~~~SET 1 EXERCISE 8: Detect AES in ECB mode~~~
-    In ./data/1.8.txt are a bunch of hex-encoded ciphertexts.
+    In ./data/8.txt are a bunch of hex-encoded ciphertexts.
 
     One of them has been encrypted with ECB.
 
