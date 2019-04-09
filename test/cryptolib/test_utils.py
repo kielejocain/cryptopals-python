@@ -20,3 +20,14 @@ def test_list_blocks():
 
     assert list(utils.list_blocks(b'', 4)) == []
     assert_raises(ValueError, utils.list_blocks, 'Q==', 0)
+
+def test_pkcs7_padding():
+    assert utils.pkcs7_padding(b'a', 4) == b'a\x03\x03\x03'
+    assert utils.pkcs7_padding(b'ab', 4) == b'ab\x02\x02'
+    assert utils.pkcs7_padding(b'abc', 4) == b'abc\x01'
+    assert utils.pkcs7_padding(b'', 8) == b'\x08\x08\x08\x08\x08\x08\x08\x08'
+    assert utils.pkcs7_padding(b'abcde', 2) == b'abcde\x01'
+    assert utils.pkcs7_padding(b'abcde', 3) == b'abcde\x01'
+    assert utils.pkcs7_padding(b'abcd', 2) == b'abcd\x02\x02'
+
+    assert_raises(ValueError, utils.pkcs7_padding, b'abcd', 1)
