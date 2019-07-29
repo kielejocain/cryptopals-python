@@ -1,4 +1,7 @@
 import itertools
+import os
+
+AES_BLOCK_SIZE = 16
 
 def aes_block(plaintext, key):
     """Uses the AES algorithm in ECB mode to encrypt a plaintext
@@ -8,8 +11,8 @@ def aes_block(plaintext, key):
     plaintext -- the byte string to be encrypted
     key        -- the byte string key
     """
-    if len(plaintext) != 16:
-        raise ValueError("The plaintext can only be one block (16 bytes).")
+    if len(plaintext) != AES_BLOCK_SIZE:
+        raise ValueError(f"The plaintext can only be one block ({AES_BLOCK_SIZE} bytes).")
     backend = default_backend()
     cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=backend)
     encryptor = cipher.encryptor()
@@ -24,18 +27,50 @@ def aes_cbc(plaintext, key, init_vec):
     key       -- the byte string key
     init_vec  -- the initialization vector
     """
-    block_size = 16
+    if len(init_vec) != AES_BLOCK_SIZE:
+        raise ValueError("The initialization vector can only be one block (16 bytes).")
     ciphertext = b''
-    blocks = utils.list_blocks(plaintext, block_size)
+    blocks = utils.list_blocks(plaintext, AES_BLOCK_SIZE)
     prev_cblock = init_vec
     for block in blocks:
         cblock = byte_key_xor(aes_block(block, prev_cblock), key)
         ciphertext += cblock
         prev_cblock = cblock
-    return plaintext
+    return ciphertext
+
+def aes_ecb(plaintext, key):
+    """Uses the AES algorithm in ECB mode to encrypt a ciphertext
+    with a given key.
+
+    Keyword arguments:
+    plaintext -- the byte string to be encrypted
+    key       -- the byte string key
+    """
+    blocks = utils.list_blocks(plaintext, AES_BLOCK_SIZE)
+    ciphertext = b''
+    for block in blocks:
+        ciphertext += aes_block(block, key)
+    return ciphertext
+
+def aes_rando(plaintext):
+    """"""
+    # Pad the plaintext randomly
+    prefix = os.urandom(random.randint(5,10))
+    suffix = os.urandom(random.randint(5,10))
+    padded_text = prefix + plaintext + suffix
+
+    # Generate a key
+    key = os.urandom(AES_BLOCK_SIZE)
+
+    # Encrypt using random mode
+    if random.randint(1,2) == 1:
+        init_vec = os.urandom(AES_BLOCK_SIZE)
+        return aes_cbc(padded_text, key, init_vec)
+    else:
+        return aes_ecb(padded_text, key)
 
 def byte_key_xor(plaintext, key):
-    """Encrypt an byte string with a byte string key.
+    """Encrypt a byte string with a byte string key.
 
     Keywork arguments:
     plaintext -- the byte string to be encrypted
