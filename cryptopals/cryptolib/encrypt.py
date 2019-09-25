@@ -1,5 +1,12 @@
 import itertools
 import os
+import random
+
+from . import utils
+
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+
 
 AES_BLOCK_SIZE = 16
 
@@ -58,6 +65,7 @@ def aes_rando(plaintext):
     prefix = os.urandom(random.randint(5,10))
     suffix = os.urandom(random.randint(5,10))
     padded_text = prefix + plaintext + suffix
+    padded_text = utils.pkcs7_padding(padded_text, AES_BLOCK_SIZE)
 
     # Generate a key
     key = os.urandom(AES_BLOCK_SIZE)
